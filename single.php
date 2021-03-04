@@ -1,3 +1,4 @@
+<?php include("path.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,7 +27,7 @@
     src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2&appId=285071545181837&autoLogAppEvents=1">
   </script>
 
-  <?php include("app/includes/header.php"); ?>
+  <?php include(ROOT_PATH . "/app/includes/header.php"); ?>
 
 
   <!-- Page Wrapper -->
@@ -159,7 +160,7 @@
   </div>
   <!-- // Page Wrapper -->
 
-  <?php include("app/includes/footer.php"); ?>
+  <?php include(ROOT_PATH . "/app/includes/footer.php"); ?>
 
 
   <!-- JQuery -->
