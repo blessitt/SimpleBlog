@@ -22,16 +22,67 @@ function selectAll($table, $conditions = [])
     $records = $stmt->get_result()->fetch_all(MYSQLI_ASSOC); 
     return $records; 
 } else { 
-    // return records that match conditions ... 
-    $sql = "SELECT * FROM users WHERE username='Carter' AND admin=1";
-}  
+    $i = 0;
+    foreach ($conditions as $key => $value){  
+        if ($i === 0) { 
+            $sql = $sql . " WHERE $key=?";
+        } else {
+            $sql = $sql . " AND $key=?";
+        }
+        $i++;
+        
+
+        } 
+        
+    $stmt = $conn->prepare($sql);  
+    $values = array_values($conditions); 
+    $types = str_repeat('s',count($values));
+    $stmt->bind_param($types, ...$values);
+    $stmt->execute(); 
+    $records = $stmt->get_result()->fetch_all(MYSQLI_ASSOC); 
+    return $records; 
+
+    
+    }  
 
 } 
 
+
+function selectOne($table, $conditions) 
+{ 
+    global $conn; 
+    $sql = "SELECT * FROM $table"; 
+    
+    $i = 0;
+    foreach ($conditions as $key => $value){  
+        if ($i === 0) { 
+            $sql = $sql . " WHERE $key=?";
+        } else {
+            $sql = $sql . " AND $key=?";
+        }
+        $i++;
+    } 
+
+    //$sql = "SELECT * FROM users WHERE admin=0 AND username='Awa' LIMIT1"
+        
+    $stmt = $conn->prepare($sql);  
+    $values = array_values($conditions); 
+    $types = str_repeat('s',count($values));
+    $stmt->bind_param($types, ...$values);
+    $stmt->execute(); 
+    $records = $stmt->get_result()->fetch_assoc(); 
+    return $records; 
+
+    
+    
+
+}
+
+
 $conditions = [ 
-'admin' => 1, 
+'admin' => 0, 
 'username' => 'Carter'
 ];
 
-$users = selectAll('users'); 
+$users = selectOne('users', $conditions); 
 dd($users);
